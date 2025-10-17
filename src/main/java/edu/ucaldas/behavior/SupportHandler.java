@@ -9,7 +9,48 @@ package edu.ucaldas.behavior;
 
 public class SupportHandler {
     public static Handler createChain() {
-        // TODO: crea la cadena: Basic → Supervisor → Manager
-        return null;
+        // crea la cadena: Basic → Supervisor → Manager
+        Handler basic = new BasicSupportHandler();
+        Handler supervisor = new SupervisorHandler();
+        Handler manager = new ManagerHandler();
+        basic.setNext(supervisor);
+        supervisor.setNext(manager);
+        return basic;
+    }
+}
+
+class BasicSupportHandler extends Handler {
+    @Override
+    public String handleRequest(String request) {
+        if (request == null) return "No se puede atender la solicitud.";
+        if ("básica".equalsIgnoreCase(request) || "basica".equalsIgnoreCase(request)) {
+            return "Atendido por Soporte Básico";
+        }
+        if (next != null) return next.handleRequest(request);
+        return "No se puede atender la solicitud.";
+    }
+}
+
+class SupervisorHandler extends Handler {
+    @Override
+    public String handleRequest(String request) {
+        if (request == null) return "No se puede atender la solicitud.";
+        if ("intermedia".equalsIgnoreCase(request) || "intermedio".equalsIgnoreCase(request)) {
+            return "Atendido por Supervisor";
+        }
+        if (next != null) return next.handleRequest(request);
+        return "No se puede atender la solicitud.";
+    }
+}
+
+class ManagerHandler extends Handler {
+    @Override
+    public String handleRequest(String request) {
+        if (request == null) return "No se puede atender la solicitud.";
+        if ("avanzada".equalsIgnoreCase(request) || "avanzado".equalsIgnoreCase(request)) {
+            return "Atendido por Gerente";
+        }
+        if (next != null) return next.handleRequest(request);
+        return "No se puede atender la solicitud.";
     }
 }
